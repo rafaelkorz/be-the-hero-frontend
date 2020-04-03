@@ -19,7 +19,7 @@ export default function Profile () {
   useEffect(() => {
     api.get('profile', {
       headers: {
-        Authorization: ongId
+        autorization: ongId
       }
     }).then(res => {
       setIncidents(res.data)
@@ -32,7 +32,7 @@ export default function Profile () {
     try {
       await api.delete(`incidents/${id}`, {
         headers: {
-          Authorization: ongId
+          autorization: ongId
         }
       }) 
 
@@ -75,9 +75,12 @@ export default function Profile () {
             <strong>VALOR:</strong>
             <p>{Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(incident.value)}</p>
 
-            <button onClick={() => handleDeleteIncident(incident.id)} type="button">
+            <button class="botao" onClick={() => handleDeleteIncident(incident.id)} type="button">
               <FiTrash2 size={20} color="#a8a8b3" />
             </button>
+
+            <Link className="button" to={`/incidents/edit/${encodeURIComponent(incident.id)}`}>Editar</Link>
+            
           </li>
         ))}
       </ul>
