@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Link, useHistory } from 'react-router-dom'
-import { FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft} from 'react-icons/fi'
+import { FaSpinner, FaPlus } from 'react-icons/fa';
+import {SubmitButton} from './style.js';
 
 import api from '../../services/api'
 import './styles.css';
@@ -14,6 +16,7 @@ export default function Register () {
   const [whatsapp, setWhatsapp] = useState('');
   const [city, setCity] = useState('');
   const [uf, setUf] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const history = useHistory();
 
@@ -28,18 +31,22 @@ export default function Register () {
       uf
     }
 
+    setLoading(true);
+
     try {
       const response = await api.post('ongs', data)
 
       alert(`Seu ID de acesso: ${response.data.id}`);
+      setLoading(false);
 
-      history.push('/')
+      //history.push('/')
     } catch (err) {
+      setLoading(true);
       alert('Erro no cadastro, tente novamente.')
+    } finally {
+      setLoading(false);
     }
   }
-
-
 
   return (
     <div className="register-container">
@@ -92,8 +99,15 @@ export default function Register () {
             />
           </div>
 
-          <button className="button" type="submit" >Cadastrar</button>
-
+          <div>
+            <SubmitButton loading={loading}>
+              {loading ? (
+                <FaSpinner color="#FFF" size={14} />
+              ) : (
+                'Cadastrar'
+              )}
+            </SubmitButton>
+          </div>
         </form>
       </div>
     </div>
